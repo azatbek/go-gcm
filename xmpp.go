@@ -282,7 +282,7 @@ func (c *gcmXMPP) Listen(h MessageHandler) error {
 				c.Send(ack)
 				go h(cm)
 			default:
-				log.WithField("ccs message", cm).Warn("uknown ccs message type")
+				log.WithField("ccs message", cm).Debug("uknown ccs message type")
 				// Upstream message: send ack and pass to listener.
 				ack := XMPPMessage{To: cm.From, MessageID: cm.MessageID, MessageType: CCSAck}
 				c.Send(ack)
