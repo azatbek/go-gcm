@@ -10,7 +10,7 @@ Documentation: [see godoc][godoc]
 
 ## Installation
 
-    $ go get github.com/kikinteractive/go-gcm
+    $ go get github.com/kolesa-team/go-gcm
 
 ## Status
 
@@ -27,10 +27,6 @@ This is a rework of [go-gcm library](https://github.com/google/go-gcm). It has t
 * automatic builds with [Travis][travis] and coverage with [Codecov][codecov] 
 
 This library is in Beta. We will make an effort to support the library, but we reserve the right to make incompatible changes when necessary.
-
-## Feedback
-
-Please read CONTRIBUTING and raise issues here in Github.
 
 ## Limitations
 
