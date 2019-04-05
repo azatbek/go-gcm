@@ -7,9 +7,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/mattn/go-xmpp"
+	"github.com/kolesa-team/go-xmpp"
 
-	"github.com/kikinteractive/go-gcm/mocks"
+	"github.com/kolesa-team/go-gcm/mocks"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"

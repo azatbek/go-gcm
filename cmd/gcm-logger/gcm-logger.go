@@ -9,7 +9,7 @@ import (
 	"github.com/alecthomas/kingpin"
 	"github.com/aliafshar/toylog"
 
-	"github.com/kikinteractive/go-gcm"
+	"github.com/kolesa-team/go-gcm"
 )
 
 var (

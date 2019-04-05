@@ -8,9 +8,9 @@ import (
 	"sync"
 	"time"
 
-	log "github.com/sirupsen/logrus"
-	"github.com/mattn/go-xmpp"
+	"github.com/kolesa-team/go-xmpp"
 	"github.com/pborman/uuid"
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -41,10 +41,10 @@ const (
 	XMPPIQResult = "result"
 
 	// GCM service constants.
-	ccsHostProd = "gcm.googleapis.com"
-	ccsPortProd = "5235"
-	ccsHostDev  = "gcm-preprod.googleapis.com"
-	ccsPortDev  = "5236"
+	ccsHost       = "fcm-xmpp.googleapis.com"
+	ccsPortProd   = "5235"
+	ccsPortDev    = "5236"
+	ccsXmppDomain = "gcm.googleapis.com"
 
 	// For CCS the min for exponential backoff has to be 1 sec
 	ccsMinBackoff = 1 * time.Second
@@ -55,12 +55,12 @@ const (
 
 var (
 	retryableErrors = map[string]bool{
-		"Unavailable":           true,
-		"SERVICE_UNAVAILABLE":   true,
-		"InternalServerError":   true,
-		"INTERNAL_SERVER_ERROR": true,
-		// TODO(silvano): should we backoff with the same strategy on
-		// DeviceMessageRateExceeded and TopicsMessageRateExceeded.
+		"Unavailable":               true,
+		"SERVICE_UNAVAILABLE":       true,
+		"InternalServerError":       true,
+		"INTERNAL_SERVER_ERROR":     true,
+		"DeviceMessageRateExceeded": true,
+		"TopicsMessageRateExceeded": true,
 	}
 )
 
@@ -100,16 +100,14 @@ type messageLogEntry struct {
 
 // newXMPPClient creates a new client for GCM XMPP Server (CCS).
 func newXMPPClient(isSandbox bool, senderID string, apiKey string, debug bool) (xmppC, error) {
-	var xmppHost, xmppAddress string
+	var xmppAddress string
 	if isSandbox {
-		xmppHost = ccsHostDev
-		xmppAddress = net.JoinHostPort(ccsHostDev, ccsPortDev)
+		xmppAddress = net.JoinHostPort(ccsHost, ccsPortDev)
 	} else {
-		xmppHost = ccsHostProd
-		xmppAddress = net.JoinHostPort(ccsHostProd, ccsPortProd)
+		xmppAddress = net.JoinHostPort(ccsHost, ccsPortProd)
 	}
 
-	nc, err := xmpp.NewClient(xmppAddress, xmppUser(xmppHost, senderID), apiKey, debug)
+	nc, err := xmpp.NewClient(xmppAddress, xmppUser(ccsXmppDomain, senderID), apiKey, debug)
 	if err != nil {
 		return nil, fmt.Errorf("error connecting gcm xmpp client: %v", err)
 	}
@@ -122,7 +120,7 @@ func newXMPPClient(isSandbox bool, senderID string, apiKey string, debug bool) (
 		}{
 			m: make(map[string]*messageLogEntry),
 		},
-		xmppHost: xmppHost,
+		xmppHost: ccsHost,
 		senderID: senderID,
 		pongs:    make(chan struct{}, 100),
 		debug:    debug,

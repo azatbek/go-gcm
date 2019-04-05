@@ -1,7 +1,7 @@
 package mocks
 
 import (
-	"github.com/mattn/go-xmpp"
+	"github.com/kolesa-team/go-xmpp"
 	"github.com/stretchr/testify/mock"
 )
 
