@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/kolesa-team/go-xmpp"
+	"github.com/mattn/go-xmpp"
 
 	"github.com/kolesa-team/go-gcm/mocks"
 
